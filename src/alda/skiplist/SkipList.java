@@ -74,7 +74,17 @@ public class SkipList<T extends Comparable<? super T>> {
 	}
 	
 	public T get(int index){
-		return null;
+		if(index<0){
+			return null;
+		}
+		Node<T> nod=head[0];
+		for(int i=0; i<index; i++){
+			if(nod.next[0]!=null){
+				nod= nod.next[0];
+			}else
+				return null;	
+		}
+		return nod.data;
 	}
 	
 	public T get(T data){
@@ -117,5 +127,6 @@ public class SkipList<T extends Comparable<? super T>> {
 		mylist.insert("today?");
 		
 		System.out.println(mylist);
+		System.out.println(mylist.get(-1));
 	}
 }
