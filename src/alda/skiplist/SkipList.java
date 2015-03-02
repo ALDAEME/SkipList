@@ -11,12 +11,16 @@ public class SkipList<T> {
 	private class Node<T>{
 		T data;
 		int level;
-		int[] pointers;
+		Node<T>[] next;
 		
 		protected Node(int level, T data){
 			this.data = data;
 			this.level = level;
-			//pointers[level];
+			next = new Node[level];
+			
+			for(int i = 0; i < level; i++){
+				next[i] = null;
+			}
 		}
 	}
 	
