@@ -3,9 +3,13 @@ package alda.skiplist;
 public class SkipList<T> {
 
 	private int maxLevel;
+	Node<T>[] head;
 	
 	public SkipList(int maxLevel){
 		this.maxLevel = maxLevel;
+		head = new Node[maxLevel];
+		for(int i = 0; i < maxLevel; i++)
+			head[i] = null;
 	}
 	
 	private class Node<T>{
