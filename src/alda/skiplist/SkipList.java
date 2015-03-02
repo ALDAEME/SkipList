@@ -1,6 +1,6 @@
 package alda.skiplist;
 
-public class SkipList<T> {
+public class SkipList<T extends Comparable<? super T>> {
 
 	private int maxLevel;
 	Node<T>[] head;
@@ -28,15 +28,56 @@ public class SkipList<T> {
 		}
 	}
 	
-	public boolean add(T data){
-		return false;
+	public void insert(T data){
+		Node<T>[] current = new Node[maxLevel];
+		Node<T>[] previous = new Node[maxLevel];
+		
+		current[maxLevel - 1] = head[maxLevel - 1];
+		previous[maxLevel - 1] = null;
+		
+		for(int i = maxLevel - 1; i >= 0; i--){
+			while(current[i] != null && current[i].data.compareTo(data) < 0){
+				previous[i] = current[i];
+				current[i] = current[i].next[i];
+			}
+			
+			if(i > 0){
+				if(previous[i] == null){
+					current[i - 1] = head[i - 1];
+					previous[i - 1] = null;
+				}else{
+					current[i - 1] = previous[i].next[i - 1];
+					previous[i - 1] = previous[i]; 
+				}
+			}
+		}
+		
+		int newLevel = generateLevel();
+		Node<T> newNode = new Node<T>(newLevel, data);
+		
+		for(int i = 0; i <= newLevel - 1; i++){
+			newNode.next[i] = current[i];
+			if(previous[i] == null){
+				head[i] = newNode;
+			}else{
+				previous[i].next[i] = newNode;
+			}
+		}
 	}
 	
 	public T remove(int index){
 		return null;
 	}
 	
+	public T remove(T data){
+		return null;
+	}
+	
 	public T get(int index){
+		return null;
+	}
+	
+	public T get(T data){
 		return null;
 	}
 	
@@ -48,5 +89,33 @@ public class SkipList<T> {
 		}
 		
 		return level;
+	}
+	
+	public String toString(){
+		Node<T> n = head[0];
+		String result = "SkipList: [";
+		
+		while(n != null){
+			result += "'" + n.data.toString() + (n.next[0] != null ? "', " : "'");
+			n = n.next[0];
+		}
+		
+		result += "]";
+		
+		return result;
+	}
+	
+	public static void main(String [] args){
+		
+		SkipList<String> mylist = new SkipList<String>(4);
+		
+		mylist.insert("hello");
+		mylist.insert("how");
+		mylist.insert("are");
+		mylist.insert("you");
+		mylist.insert("doing");
+		mylist.insert("today?");
+		
+		System.out.println(mylist);
 	}
 }
