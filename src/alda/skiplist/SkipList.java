@@ -53,6 +53,7 @@ public class SkipList<T extends Comparable<? super T>> {
 		}
 		
 		int newLevel = generateLevel();
+System.out.print(newLevel+" ");
 		Node<T> newNode = new Node<T>(newLevel, data);
 		
 		for(int i = 0; i <= newLevel - 1; i++){
@@ -69,26 +70,60 @@ public class SkipList<T extends Comparable<? super T>> {
 		return null;
 	}
 	
-	public T remove(T data){
-		return null;
+	public boolean remove(T data){
+		Node<T>[] current = new Node[maxLevel];
+		Node<T>[] previous = new Node[maxLevel];
+		
+		current[maxLevel - 1] = head[maxLevel - 1];
+		previous[maxLevel - 1] = null;
+		
+		for(int i = maxLevel - 1; i >= 0; i--){
+			while(current[i] != null && current[i].data.compareTo(data) < 0){
+				previous[i] = current[i];
+				current[i] = current[i].next[i];
+			}
+			
+			if(current[i] != null && data.equals(current[i].data)){
+				
+				
+				// remove
+				for(int j = maxLevel; j >= 0; j--){
+					if(previous[i] != null)
+						previous[i].next = current[i].next;
+					else
+						System.out.println("n");
+				}
+				
+				return true;
+			}
+			
+			if(i > 0){
+				if(previous[i] == null){
+					current[i - 1] = head[i - 1];
+					previous[i - 1] = null;
+				}else{
+					current[i - 1] = previous[i].next[i - 1];
+					previous[i - 1] = previous[i]; 
+				}
+			}
+		}
+		
+		return false;
 	}
 	
 	public T get(int index){
-		if(index<0){
+		if(index < 0)
 			return null;
-		}
-		Node<T> nod=head[0];
-		for(int i=0; i<index; i++){
-			if(nod.next[0]!=null){
-				nod= nod.next[0];
+		
+		Node<T> node = head[0];
+		
+		for(int i = 0; i < index; i++){
+			if(node.next[0] != null){
+				node = node.next[0];
 			}else
 				return null;	
 		}
-		return nod.data;
-	}
-	
-	public T get(T data){
-		return null;
+		return node.data;
 	}
 	
 	private int generateLevel(){
@@ -126,7 +161,14 @@ public class SkipList<T extends Comparable<? super T>> {
 		mylist.insert("doing");
 		mylist.insert("today?");
 		
+		System.out.println(" ");
 		System.out.println(mylist);
-		System.out.println(mylist.get(-1));
+		//System.out.println(mylist.get(-1));
+		mylist.remove("you");
+		//mylist.remove("today?");
+		
+		//mylist.insert("foobar");
+		
+		System.out.println(mylist);
 	}
 }
