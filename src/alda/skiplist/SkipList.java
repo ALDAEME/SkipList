@@ -10,10 +10,10 @@ public class SkipList<T extends Comparable<? super T>> {
 		head = new Node<T>(maxLevel, null);	//Startnod
 	}
 
-	private class Node<T>{
+	private class Node<T>{//Nodklass
 		T data;
 		int level;
-		Node<T>[] next;
+		Node<T>[] next;//Noderna innehåller en array av pekare
 
 		protected Node(int level, T data){
 			this.data = data;
@@ -25,16 +25,11 @@ public class SkipList<T extends Comparable<? super T>> {
 		}
 	}
 
-	public void insert(T data){
+	public void insert(T data){//Insättning
 		Node<T> current= head;
 		int newLevel=generateLevel();
 		Node<T> newNode= new Node<T>(newLevel, data);
 
-		if(head.next[0]==null){ //Om tom skipList, lägg till ny först
-			for(int i = 0; i<=newLevel-1; i++){
-				head.next[i]=newNode;
-			}	
-		}else{ //Annars, hitta vart den ska vara
 			for(int i =newLevel-1; i>=0; i--){
 				while(current.next[i]!=null && current.next[i].data.compareTo(data)<0){
 					current=current.next[i];
@@ -42,10 +37,9 @@ public class SkipList<T extends Comparable<? super T>> {
 				newNode.next[i]=current.next[i];//Stoppar in den nya noden.
 				current.next[i]=newNode;
 			}
-		}
 	}
 
-	public void remove(T data){
+	public void remove(T data){ //Borttag
 		Node<T> current= head;
 		for(int i =maxLevel-1; i>=0; i--){
 			while(current.next[i]!=null && current.next[i].data.compareTo(data)<=0){
@@ -58,7 +52,7 @@ public class SkipList<T extends Comparable<? super T>> {
 		}
 	}
 	
-	public T get(T data){
+	public T get(T data){ //Sökning
 		Node<T> node=new Node<T>(maxLevel, null);
 		Node<T> current= head;
 		for(int i =maxLevel-1; i>=0; i--){
@@ -75,9 +69,9 @@ public class SkipList<T extends Comparable<? super T>> {
 	}
 
 
-	public T remove(int index){
-		return null;
-	}
+//	public T remove(int index){
+//		return null;
+//	}
 
 	private int generateLevel(){
 		int level = 1;
@@ -101,6 +95,16 @@ public class SkipList<T extends Comparable<? super T>> {
 		}
 		return node.data;
 	}
+	public String toString(){
+		String string="";
+		Node<T> current=head;
+		while(current.next[0]!=null){
+			string += current.next[0].data.toString() +" ";
+			current=current.next[0];
+		}
+		return string;
+		
+	}
 
 	public static void main(String [] args){
 		SkipList<String> mylist = new SkipList<String>(4);
@@ -111,27 +115,25 @@ public class SkipList<T extends Comparable<? super T>> {
 		mylist.insert("you");
 		mylist.insert("doing");
 		mylist.insert("today?");
-		System.out.println("Fullständig lista:");
-		System.out.print(mylist.get(0)+" ");
-		System.out.print(mylist.get(1)+" ");
-		System.out.print(mylist.get(2)+" ");
-		System.out.print(mylist.get(3)+" ");
-		System.out.print(mylist.get(4)+" ");
-		System.out.println(mylist.get(5)+" ");
+		System.out.println(mylist.toString());
 
 		mylist.remove("you");
 		mylist.remove("hello");
 		mylist.remove("hi");
 		System.out.println("Efter remove");
-		System.out.print(mylist.get(0)+" ");
-		System.out.print(mylist.get(1)+" ");
-		System.out.print(mylist.get(2)+" ");
-		System.out.print(mylist.get(3)+" ");
-		System.out.print(mylist.get(4)+" ");
-		System.out.println(mylist.get(5)+" ");
+		System.out.println(mylist.toString());
 		
 		System.out.println(mylist.get("are"));
-		System.out.println(mylist.get("hej"));
-
+		System.out.println(mylist.get("hi"));
+		
+		SkipList<Integer> intlist = new SkipList<Integer>(3);
+		intlist.insert(4);
+		intlist.insert(1);
+		intlist.insert(3);
+		System.out.println(intlist.toString());
+		intlist.remove(2);
+		intlist.remove(1);
+		System.out.println(intlist.toString());
+		
 	}
 }
