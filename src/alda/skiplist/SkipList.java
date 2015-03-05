@@ -38,12 +38,10 @@ public class SkipList<T extends Comparable<? super T>> {
 			for(int i =newLevel-1; i>=0; i--){
 				while(current.next[i]!=null && current.next[i].data.compareTo(data)<0){
 					current=current.next[i];
-
 				}	
 				newNode.next[i]=current.next[i];//Stoppar in den nya noden.
 				current.next[i]=newNode;
 			}
-
 		}
 	}
 
@@ -58,6 +56,22 @@ public class SkipList<T extends Comparable<? super T>> {
 				}
 			}		
 		}
+	}
+	
+	public T get(T data){
+		Node<T> node=new Node<T>(maxLevel, null);
+		Node<T> current= head;
+		for(int i =maxLevel-1; i>=0; i--){
+			while(current.next[i]!=null && current.next[i].data.compareTo(data)<=0){
+				if(current.next[i].data.equals(data)){ //Om datan är hittad, riktas pekarna om.
+					node=current.next[i];
+					break;
+				}else{
+					current=current.next[i];//om inte, hoppa till nästa 
+				}
+			}		
+		}
+		return node.data;
 	}
 
 
@@ -114,7 +128,10 @@ public class SkipList<T extends Comparable<? super T>> {
 		System.out.print(mylist.get(2)+" ");
 		System.out.print(mylist.get(3)+" ");
 		System.out.print(mylist.get(4)+" ");
-		System.out.print(mylist.get(5)+" ");
+		System.out.println(mylist.get(5)+" ");
+		
+		System.out.println(mylist.get("are"));
+		System.out.println(mylist.get("hej"));
 
 	}
 }
