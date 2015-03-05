@@ -61,17 +61,12 @@ public class SkipList<T extends Comparable<? super T>> {
 					node=current.next[i];
 					break;
 				}else{
-					current=current.next[i];//om inte, hoppa till nästa 
+					current=current.next[i];//om inte, hoppa till nästa nod 
 				}
 			}		
 		}
 		return node.data;
 	}
-
-
-//	public T remove(int index){
-//		return null;
-//	}
 
 	private int generateLevel(){
 		int level = 1;
@@ -80,21 +75,7 @@ public class SkipList<T extends Comparable<? super T>> {
 		}
 		return level;
 	}
-
-	public T get(int index){
-		if(index < 0)
-			return null;
-
-		Node<T> node = head.next[0];
-
-		for(int i = 0; i < index; i++){
-			if(node.next[0] != null){
-				node = node.next[0];
-			}else
-				return null;	
-		}
-		return node.data;
-	}
+	
 	public String toString(){
 		String string="";
 		Node<T> current=head;
