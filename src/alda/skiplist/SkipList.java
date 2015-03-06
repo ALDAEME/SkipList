@@ -1,9 +1,7 @@
 /**
  * ALDA - Algoritmdesigntekniker
  * 
- * @author Elise Edette (tero0337)
  * @author Aframyeos Rohoum (afro0793)
- * @author Emma Persson (empe5691)
  */
 
 package alda.skiplist;
